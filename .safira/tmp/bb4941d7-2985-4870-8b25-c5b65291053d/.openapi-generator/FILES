@@ -1,0 +1,16 @@
+.dockerignore
+.openapi-generator-ignore
+README.md
+pom.xml
+src/gen/java/br/com/vertigo/employee/api/EmployeesApi.java
+src/gen/java/br/com/vertigo/employee/api/HeroesApi.java
+src/gen/java/br/com/vertigo/employee/dto/EmployeePatchDTO.java
+src/gen/java/br/com/vertigo/employee/dto/EmployeePostDTO.java
+src/gen/java/br/com/vertigo/employee/dto/EmployeeResponseDTO.java
+src/gen/java/br/com/vertigo/employee/dto/EmployeeSummedUpDTO.java
+src/gen/java/br/com/vertigo/employee/dto/ErrorDTO.java
+src/gen/java/br/com/vertigo/employee/dto/HeroResponseDTO.java
+src/main/docker/Dockerfile.jvm
+src/main/docker/Dockerfile.native
+src/main/openapi/openapi.yaml
+src/main/resources/application.properties

@@ -1,0 +1,580 @@
+openapi: 3.0.3
+info:
+  title: Employees-API
+  description: Employees API Documentation
+  version: 0.0.1
+  contact:
+    name: Yuri Nascimento
+    email: ynascimento@vertigo.com.br
+    url: https://github.com/yuriidiiego
+tags:
+  - name: Employees
+    description: Data about employees
+  - name: Heroes
+    description: Data about heroes
+  - name: Consulta CEP
+    description: query the SOAP service to get the address
+
+paths:
+  "/employees":
+    get:
+      tags:
+        - Employees
+      operationId: getEmployees
+      summary: List all employees
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EmployeeResponseDTO"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                message: Bad Request
+                status: 400
+                timestamp: 2020-05-05T17:00:00.000Z
+                path: /employees
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Internal server error
+                message: Internal server error
+                timestamp: 2018-03-20T09:12:28Z
+
+    post:
+      tags:
+        - Employees
+      operationId: createEmployee
+      summary: Create a new employee
+      description: Create a new employee
+      requestBody:
+        required: true
+        description: Employee object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeePostDTO"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeResponseDTO"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Requested parameter is invalid
+                message: For input string {{ "id" }}
+                timestamp: 2018-03-20T09:12:28Z
+        "405":
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Method not allowed
+                message: Method not allowed
+                timestamp: 2018-03-20T09:12:28Z
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Internal server error
+                message: Internal Server Error. Please try again later.
+                timestamp: 2018-03-20T09:12:28Z
+
+  "/employees/{id}/summed-up":
+    get:
+      tags:
+        - Employees
+      operationId: getEmployeeSummedUp
+      summary: Get the name and the last name of an employee
+      description: Get the name and the last name of an employee
+      parameters:
+        - name: id
+          in: path
+          description: Employee id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeSummedUpDTO"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Requested parameter is invalid
+                message: For input string {{ "id" }}
+                timestamp: 2018-03-20T09:12:28Z
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Not found
+                message: Employee with id {{ "id" }} not found
+                timestamp: 2018-03-20T09:12:28Z
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Internal server error
+                message: Internal Server Error. Please try again later.
+                timestamp: 2018-03-20T09:12:28Z
+  "/heroes":
+    get:
+      tags:
+        - Heroes
+      operationId: getHeroes
+      summary: List all heroes
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HeroResponseDTO"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Requested parameter is invalid
+                message: For input string {{ "id" }}
+                timestamp: 2018-03-20T09:12:28Z
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Internal server error
+                message: Internal Server Error. Please try again later.
+                timestamp: 2018-03-20T09:12:28Z
+
+  "/heroes/{id}":
+    get:
+      tags:
+        - Heroes
+      operationId: getHero
+      summary: Get a hero by id
+      description: Get a hero by id
+      parameters:
+        - name: id
+          in: path
+          description: Hero id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeroResponseDTO"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Requested parameter is invalid
+                message: For input string {{ "id" }}
+                timestamp: 2018-03-20T09:12:28Z
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Not found
+                message: Hero not found with id {{ "id" }}
+                timestamp: 2018-03-20T09:12:28Z
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Internal server error
+                message: Internal Server Error. Please try again later.
+                timestamp: 2018-03-20T09:12:28Z
+  "/consultacep/{cep}":
+    get:
+      tags:
+        - Consulta CEP
+      operationId: consultaCep
+      summary: Get address by cep
+      parameters:
+        - name: cep
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnderecoResponseDTO"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Requested parameter is invalid
+                message: For input string {{ "id" }}
+                timestamp: 2018-03-20T09:12:28Z
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Internal server error
+                message: Internal Server Error. Please try again later.
+                timestamp: 2018-03-20T09:12:28Z
+
+  "/employees/{id}":
+    parameters:
+      - name: id
+        in: path
+        description: Employee ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+    get:
+      tags:
+        - Employees
+      operationId: getEmployee
+      summary: Get an employee by ID
+      responses:
+        "200":
+          description: Successful operation!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeResponseDTO"
+
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Not found
+                message: Employee not found with id {{ "id" }}
+                timestamp: 2018-03-20T09:12:28Z
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Internal server error
+                message: Internal Server Error. Please try again later.
+                timestamp: 2018-03-20T09:12:28Z
+
+    patch:
+      tags:
+        - Employees
+      operationId: updateEmployee
+      summary: Update an employee by id
+      description: Update an employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeePatchDTO"
+
+      responses:
+        "200":
+          description: Successful operation!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeResponseDTO"
+
+        "404":
+          description: Not found!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Employee not found
+                message: Employee not found with id {{ "id" }}
+                timestamp: 2018-03-20T09:12:28Z
+    delete:
+      tags:
+        - Employees
+      operationId: deleteEmployee
+      summary: Delete employe e by id
+      responses:
+        "204":
+          description: "No content"
+
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                error: Employee not found
+                message: Employee not found with id {{ "id" }}
+                timestamp: 2018-03-20T09:12:28Z
+
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+              example:
+                from: employees-api
+                statuscode: 500
+                timestamp: 2018-03-20T09:12:28Z
+                message: Internal Server Error. Please try again later.
+
+components:
+  schemas:
+    EnderecoResponseDTO:
+      type: object
+      properties:
+        bairro:
+          type: string
+          example: "Maguari"
+        cep:
+          type: string
+          example: "67145-310"
+        cidade:
+          type: string
+          example: "Ananindeua"
+        complemento:
+          type: string
+          example: "Apto. 101"
+        endereco:
+          type: string
+          example: "Rua dos Bobos"
+        uf:
+          type: string
+          example: "PA"
+
+    HeroResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        nomeVerdadeiro:
+          type: string
+          example: Batman
+        caracteristica:
+          type: string
+          example: Batman is godd
+    EmployeeSummedUpDTO:
+      type: object
+      required:
+        - nome
+        - sobrenome
+      properties:
+        nome:
+          type: string
+          example: "John "
+        sobreNome:
+          type: string
+          example: "Constantine"
+
+    EmployeePostDTO:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - department
+        - jobTitle
+        - employeeType
+        - startDate
+        - status
+        - email
+      properties:
+        firstName:
+          type: string
+          description: First name of the employee
+          example: "Arthur"
+          maxLength: 45
+          minLength: 3
+        lastName:
+          type: string
+          description: Last name of the employee
+          example: "Gama"
+          maxLength: 45
+          minLength: 3
+        department:
+          type: string
+          description: Department of the employee
+          example: Finance
+        jobTitle:
+          type: string
+          description: Job title of the employee
+          example: "Accountant"
+        employeeType:
+          type: string
+          description: Type of the employee
+          example: "Full Time"
+        startDate:
+          type: string
+          description: Start date of the employee - format(dd/MM/yyyy)
+          format: date
+          example: "02/10/1995"
+        status:
+          type: string
+          description: Status of the employee
+          example: Active
+        email:
+          type: string
+          description: Email of the employee
+          example: "email@example.com"
+          maxLength: 45
+          minLength: 4
+    EmployeeResponseDTO:
+      allOf:
+        - $ref: "#/components/schemas/EmployeePostDTO"
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Employee ID
+          example: 1
+
+    EmployeePatchDTO:
+      properties:
+        firstName:
+          type: string
+          description: First name of the employee
+          example: "Arthur"
+          maxLength: 45
+          minLength: 3
+        lastName:
+          type: string
+          description: Last name of the employee
+          example: "Gama"
+          maxLength: 45
+          minLength: 3
+        department:
+          type: string
+          description: Department of the employee
+          example: Finance
+        jobTitle:
+          type: string
+          description: Job title of the employee
+          example: "Accountant"
+        employeeType:
+          type: string
+          description: Type of the employee
+          example: "Full Time"
+        startDate:
+          type: string
+          description: Start date of the employee - format(dd/MM/yyyy)
+          format: date
+          example: "02/10/1995"
+        status:
+          type: string
+          description: Status of the employee
+          example: Active
+        email:
+          type: string
+          description: Email of the employee
+          example: "arthur@example.com"
+          maxLength: 45
+          minLength: 4
+
+    ErrorDTO:
+      type: object
+      properties:
+        from:
+          type: string
+          format: string
+        statuscode:
+          type: integer
+          format: int32
+        timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+          format: string

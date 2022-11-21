@@ -1,0 +1,49 @@
+# URL of the employee-api
+heros-api/mp-rest/url: https://628bd107667aea3a3e36ba27.mockapi.io/api/v1
+
+quarkus:
+  banner:
+    enabled: false
+
+  # HTTP configuration
+  http:
+    port: 8080
+    access-log:
+      enabled: false
+
+  # Datasource configuration
+  datasource:
+    db-kind: mysql
+    username: doadmin
+    password: AVNS_3sYFLBtKGeHIbycPEQA
+    jdbc:
+      url: jdbc:mysql://integracao-mysql-do-user-3646367-0.b.db.ondigitalocean.com:25060/blueprint
+
+    # Profile for Test
+"%test":
+  quarkus:
+    datasource:
+      username: ${DATASOURCE_TEST_USERNAME}
+      password: ${DATASOURCE_TEST_PASSWORD}
+      jdbc:
+        url: ${DATASOURCE_TEST_URL}
+      driver: org.postgresql.Driver
+
+  # Profile for Okteto
+"%okteto":
+  quarkus:
+    http:
+      host: 0.0.0.0
+    devservices:
+      enabled: false
+      url: http://localhost:8080
+
+  # Log configuration
+  log:
+    file:
+      enable: true
+      level: TRACE
+      path: /home/yuriidiiego/Yuri-Nascimento/projetos/Vertigo/Quarkus/employees-api/target/logs/temp/trace.log
+    console:
+      format: timestamp="%d{yyyy-MM-dd HH:mm:ss,SSS}" severity="%-5p" loggerName="[%c{3.}]" threadName="(%t)" %s%e%n
+    level: INFO

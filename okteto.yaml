@@ -1,0 +1,29 @@
+####
+# Explicar o que é esse manifesto
+#
+# Explicar o que é o okteto
+#
+# Explicar a vantagen que usar o okteto num ambiente de desenvolvimento trás
+#
+# Explicar como rodar o projeto (safira-cli okteto up, e quarkus dev -Dquarkus.profile=okteto)
+#
+# Explicar como acessar a api pelo okteto
+#
+# Explicar como sair do ambiente do okteto
+####
+name: employees-api
+image: ipaasvertigo/okteto-runtime:java-11
+command: "bash"
+workdir: /usr/src/app # add
+volumes:
+  - /root/.m2
+sync:
+  - .:/usr/src/app
+autocreate: true
+forward:
+  - 8080:8080
+  - 5005:5005
+persistentVolume: # add
+  enabled: true # add
+  storageClass: standard # add
+  size: 1Gi # add

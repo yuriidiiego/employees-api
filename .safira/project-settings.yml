@@ -1,0 +1,17 @@
+project:
+  name: employees-api
+  description: quarkus-employee
+  import-type: openapi_spec
+  java:
+    management: maven-project
+    springbootVersion: null
+    package: br.com.vertigo.employee
+    version: null
+  language: java
+  framework: quarkus
+  applicationPort: "8080"
+  kubernetes:
+    namespace: null
+  docker:
+    registry: null
+  export-openapi-kubernetes: false
