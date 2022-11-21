@@ -28,6 +28,7 @@ public interface EmployeeMapper {
   @Mapping(target = "sobreNome", source = "lastName")
   EmployeeSummedUpDTO toDTO(EmployeeResponseDTO employeeResponseDTO);
 
+  @Mapping(target = "id", ignore = true)
   EmployeeModel toModel(
     EmployeePatchDTO employeePatchDTO,
     @MappingTarget EmployeeModel employeeModel
